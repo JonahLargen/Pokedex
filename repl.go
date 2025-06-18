@@ -22,20 +22,10 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    commandExit,
-		},
-		"help": {
-			name:        "help",
-			description: "Display this help message",
-			callback:    help,
-		},
-	}
+type config struct {
+	NextLocationAreaUrl     string
+	PreviousLocationAreaUrl string
 }
