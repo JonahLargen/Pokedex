@@ -24,7 +24,13 @@ func GetLocationAreas(pageUrl string) (*LocationAreaResponse, error) {
 	if pageUrl != "" {
 		url = pageUrl
 	}
-	print("Fetching location areas from: ", url)
+	if cachedData, found := pokeCache.Get(url); found {
+		var cachedResp LocationAreaResponse
+		if err := json.Unmarshal(cachedData, &cachedResp); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal cached data: %w", err)
+		}
+		return &cachedResp, nil
+	}
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -37,6 +43,7 @@ func GetLocationAreas(pageUrl string) (*LocationAreaResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	pokeCache.Add(url, body)
 	var apiResp LocationAreaResponse
 	if err := json.Unmarshal(body, &apiResp); err != nil {
 		return nil, err
