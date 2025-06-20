@@ -21,10 +21,12 @@ func main() {
 				continue
 			}
 			commandName := cleanedInput[0]
+			commandArgs := cleanedInput[1:]
 			command, ok := commands[commandName]
 			if !ok {
 				fmt.Println("Unknown command:", commandName)
 			} else {
+				config.CommandArgs = commandArgs
 				err := command.callback(config)
 				if err != nil {
 					fmt.Printf("Error executing command '%s': %v\n", commandName, err)

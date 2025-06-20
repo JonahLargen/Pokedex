@@ -29,6 +29,11 @@ func getCommands() map[string]cliCommand {
 			description: "Display the previous map of the Pokedex",
 			callback:    commandMapBack,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Explore a specific location area",
+			callback:    commandExplore,
+		},
 	}
 }
 
@@ -70,6 +75,25 @@ func commandMapBack(cfg *config) error {
 	cfg.PreviousLocationAreaUrl = locations.Previous
 	for _, loc := range locations.Results {
 		fmt.Println(loc.Name)
+	}
+	return nil
+}
+
+func commandExplore(cfg *config) error {
+	if len(cfg.CommandArgs) < 1 {
+		return fmt.Errorf("please provide a location area name; E.g. 'explore viridian-forest'")
+	}
+	areaName := cfg.CommandArgs[0]
+	if areaName == "" {
+		return fmt.Errorf("location area name cannot be empty")
+	}
+	resp, err := pokeapi.GetLocationAreaInfo(areaName)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Exploring %s...\n", resp.Location.Name)
+	for _, encounter := range resp.PokemonEncounters {
+		fmt.Printf("- %v\n", encounter.Pokemon.Name)
 	}
 	return nil
 }

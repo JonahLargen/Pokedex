@@ -28,4 +28,5 @@ type cliCommand struct {
 type config struct {
 	NextLocationAreaUrl     string
 	PreviousLocationAreaUrl string
+	CommandArgs             []string
 }
