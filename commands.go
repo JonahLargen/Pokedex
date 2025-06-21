@@ -45,6 +45,12 @@ func getCommands() map[string]cliCommand {
 			usage:       "catch <pokemon-name>",
 			callback:    commandCatch,
 		},
+		"inspect": {
+			name:        "inspect",
+			description: "Inspect a caught Pokémon",
+			usage:       "inspect <pokemon-name>",
+			callback:    commandInspect,
+		},
 	}
 }
 
@@ -55,6 +61,7 @@ var commandOrder = []string{
 	"mapb",
 	"explore",
 	"catch",
+	"inspect",
 }
 
 func commandExit(cfg *config) error {
@@ -143,6 +150,33 @@ func commandCatch(cfg *config) error {
 	fmt.Printf("%s was caught!\n", resp.Name)
 	if _, exists := cfg.CaughtPokemon[resp.Name]; !exists {
 		cfg.CaughtPokemon[resp.Name] = *resp
+	}
+	return nil
+}
+
+func commandInspect(cfg *config) error {
+	if len(cfg.CommandArgs) < 1 {
+		return fmt.Errorf("please provide a Pokémon name to inspect; E.g. 'inspect pikachu'")
+	}
+	pokemonName := cfg.CommandArgs[0]
+	if pokemonName == "" {
+		return fmt.Errorf("pokémon name cannot be empty")
+	}
+	pokemon, exists := cfg.CaughtPokemon[pokemonName]
+	if !exists {
+		fmt.Println("you have not caught that pokemon")
+		return nil
+	}
+	fmt.Printf("Name: %s\n", pokemon.Name)
+	fmt.Printf("Height: %v\n", pokemon.Height)
+	fmt.Printf("Weight: %v\n", pokemon.Weight)
+	fmt.Println("Stats:")
+	for _, stat := range pokemon.Stats {
+		fmt.Printf("- %s: %d\n", stat.Stat.Name, stat.BaseStat)
+	}
+	fmt.Println("Types:")
+	for _, t := range pokemon.Types {
+		fmt.Printf("- %s\n", t.Type.Name)
 	}
 	return nil
 }
