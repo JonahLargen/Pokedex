@@ -22,8 +22,8 @@ A command-line Pokedex application written in Go. This project allows users to e
 Clone the repository:
 
 ```sh
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/JonahLargen/Pokedex
+cd Pokedex
 ```
 
 Build the project:
@@ -37,7 +37,7 @@ go build
 Run the application:
 
 ```sh
-./pokedex
+./Pokedex
 ```
 
 You will see a prompt.  
@@ -60,20 +60,41 @@ Type commands to interact with the Pokedex.
 
 ```
 > map
-Showing locations 1-20
-> explore viridian-forest
-Wild Pokémon: caterpie, weedle, pikachu
-> catch pikachu
-You caught pikachu!
+canalave-city-area
+eterna-city-area
+...
+> explore canalave-city-area
+Exploring canalave-city...
+- tentacool
+- tentacruel
+...
+> catch tentacool
+Throwing a Pokeball at tentacool...
+tentacool was caught!
+> inspect tentacool
+Name: tentacool
+Height: 9
+Weight: 455
+Stats:
+- hp: 40
+- attack: 40
+- defense: 35
+- special-attack: 50
+- special-defense: 100
+- speed: 70
+Types:
+- water
+- poison
 > pokedex
-Your Pokémon: pikachu
+Your Pokedex:
+- tentacool
 ```
 
 ## Project Structure
 
 - `main.go`: Entry point and REPL loop
-- `commands.go`: Command implementations
 - `repl.go`: Input cleaning and CLI types
+- `commands.go`: Command implementations
 - `pokeapi`: PokeAPI client and data models
 - `pokecache`: Caching utilities
 
