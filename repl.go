@@ -2,6 +2,8 @@ package main
 
 import (
 	"strings"
+
+	"github.com/JonahLargen/Pokedex/internal/pokeapi"
 )
 
 func cleanInput(text string) []string {
@@ -22,6 +24,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
+	usage       string
 	callback    func(*config) error
 }
 
@@ -29,4 +32,5 @@ type config struct {
 	NextLocationAreaUrl     string
 	PreviousLocationAreaUrl string
 	CommandArgs             []string
+	CaughtPokemon           map[string]pokeapi.PokemonResponse
 }
